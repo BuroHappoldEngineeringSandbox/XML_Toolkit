@@ -62,7 +62,7 @@ namespace BH.Adapter.XML
             return storey;
         }
 
-        [Description("Returns a BHoM Level represention of a gbXML storey.")]
+        [Description("Returns a BHoM Level representation of a gbXML storey.")]
         [Input("storey", "Set a gbXML storey to get the Level from.")]
         [Output("level", "The BHoM level.")]
         public static BHS.SettingOut.Level FromGBXML(this BHX.BuildingStorey storey)
