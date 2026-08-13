@@ -57,3 +57,5 @@ namespace BH.Engine.Adapters.XML
 
 
 
+
+// CI validation: empty version-conditional scan path. Revert.

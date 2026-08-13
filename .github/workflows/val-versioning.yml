@@ -1,0 +1,25 @@
+# Sandbox validation only. Confirms the empty version-conditional scan path: this repo has
+# no #if REVIT directives, so the scan should write a header-only file and findings should
+# record No rather than Unknown.
+name: CI
+
+on:
+  pull_request:
+    branches:
+      - develop
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}-${{ github.event_name }}
+  cancel-in-progress: true
+
+jobs:
+  ci-versioning:
+    runs-on: windows-2025-vs2026
+    timeout-minutes: 45
+    steps:
+      - name: Run versioning
+        uses: BuroHappoldEngineeringAdmin/CI_Toolkit/.github/actions/ci-versioning@val/internal-refs-3
+        with:
+          app_id: ${{ secrets.BHOM_APP_ID }}
+          private_key: ${{ secrets.BHOM_APP_PRIVATE_KEY }}
+          base_ref: ${{ github.base_ref }}
