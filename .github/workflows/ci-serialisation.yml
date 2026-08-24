@@ -1,0 +1,19 @@
+# Sandbox validation of CI_Toolkit item 4 (baseline dependency refs). Not for merge.
+name: CI
+on:
+  pull_request:
+    branches: [develop]
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  ci-serialisation:
+    runs-on: windows-2025-vs2026
+    timeout-minutes: 90
+    steps:
+      - name: Run serialisation
+        uses: BuroHappoldEngineeringSandbox/CI_Toolkit/.github/actions/ci-serialisation@validate/item4-integration
+        with:
+          app_id: ${{ secrets.BHOM_APP_ID }}
+          private_key: ${{ secrets.BHOM_APP_PRIVATE_KEY }}
+          base_ref: ${{ github.base_ref }}
