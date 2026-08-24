@@ -1,0 +1,68 @@
+# Sandbox regression check for CI_Toolkit PR #9 (item 4 fix) across every
+# resolve-dependencies caller. Beta bundle plus ci-unit-tests, all pinned to
+# BuroHappoldEngineeringSandbox/CI_Toolkit@validate/item4-integration. Not for merge.
+name: CI
+on:
+  pull_request:
+    branches: [develop]
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  ci-build:
+    runs-on: windows-2025-vs2026
+    timeout-minutes: 30
+    steps:
+      - uses: BuroHappoldEngineeringSandbox/CI_Toolkit/.github/actions/ci-build@validate/item4-integration
+        with:
+          app_id: ${{ secrets.BHOM_APP_ID }}
+          private_key: ${{ secrets.BHOM_APP_PRIVATE_KEY }}
+
+  ci-code-compliance:
+    runs-on: windows-2025-vs2026
+    timeout-minutes: 20
+    permissions: { contents: read, pull-requests: read, actions: write }
+    steps:
+      - uses: BuroHappoldEngineeringSandbox/CI_Toolkit/.github/actions/ci-compliance@validate/item4-integration
+        with:
+          check_type: code
+          patterns: '*.cs'
+          app_id: ${{ secrets.BHOM_APP_ID }}
+          private_key: ${{ secrets.BHOM_APP_PRIVATE_KEY }}
+
+  ci-dataset-tests:
+    runs-on: windows-2025-vs2026
+    timeout-minutes: 30
+    steps:
+      - uses: BuroHappoldEngineeringSandbox/CI_Toolkit/.github/actions/ci-dataset-tests@validate/item4-integration
+        with:
+          app_id: ${{ secrets.BHOM_APP_ID }}
+          private_key: ${{ secrets.BHOM_APP_PRIVATE_KEY }}
+
+  ci-serialisation:
+    runs-on: windows-2025-vs2026
+    timeout-minutes: 90
+    steps:
+      - uses: BuroHappoldEngineeringSandbox/CI_Toolkit/.github/actions/ci-serialisation@validate/item4-integration
+        with:
+          app_id: ${{ secrets.BHOM_APP_ID }}
+          private_key: ${{ secrets.BHOM_APP_PRIVATE_KEY }}
+          base_ref: ${{ github.base_ref }}
+
+  ci-versioning:
+    runs-on: windows-2025-vs2026
+    timeout-minutes: 90
+    steps:
+      - uses: BuroHappoldEngineeringSandbox/CI_Toolkit/.github/actions/ci-versioning@validate/item4-integration
+        with:
+          app_id: ${{ secrets.BHOM_APP_ID }}
+          private_key: ${{ secrets.BHOM_APP_PRIVATE_KEY }}
+
+  ci-unit-tests:
+    runs-on: windows-2025-vs2026
+    timeout-minutes: 30
+    steps:
+      - uses: BuroHappoldEngineeringSandbox/CI_Toolkit/.github/actions/ci-unit-tests@validate/item4-integration
+        with:
+          app_id: ${{ secrets.BHOM_APP_ID }}
+          private_key: ${{ secrets.BHOM_APP_PRIVATE_KEY }}
